@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class TicketTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "create_ticket" do
+    ticket = create(:ticket)
+    assert ticket
+  end
 end
