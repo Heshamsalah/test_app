@@ -11,7 +11,7 @@ class TicketsController < ApplicationController
   end
 
   def create
-    user = User.find(ticket_params[:assignee])
+    user = User.find(ticket_params[:assigned_user_id])
     @ticket = Ticket.new({
       title: ticket_params[:title],
       description: ticket_params[:description],
@@ -37,7 +37,7 @@ class TicketsController < ApplicationController
   private
     def ticket_params
       params.permit(
-        :id, :title, :description, :assignee, :due_date, :page, :per_page
+        :id, :title, :description, :assigned_user_id, :due_date, :page, :per_page
       )
     end
     
