@@ -27,6 +27,8 @@ class TicketsController < ApplicationController
   end
 
   def update
+    @ticket.update(ticket_params)
+    head :no_content
   end
 
   def destroy

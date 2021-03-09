@@ -25,10 +25,12 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # test "should get update" do
-  #   get tickets_update_url
-  #   assert_response :success
-  # end
+  test "should update ticket" do
+    ticket = @tickets.first
+    put ticket_url(id: ticket.id), params: { title: "New updated title" }
+    assert_response :success
+    assert_equal ticket.reload.title, "New updated title"
+  end
 
   test "should delete ticket" do
     delete ticket_url(id: @tickets.first.id)
