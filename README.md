@@ -11,5 +11,9 @@ their profile configuration.
 - `rails db:migrate`
 - `rails s`
 
+### Running Tests
+- Individual test files: `ruby -I test path/to/testfile.rb`
+- All test suite: `rake test`
+
 ### dependencies:
 [Redis](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-20-04#step-1-%E2%80%94-installing-and-configuring-redis)
