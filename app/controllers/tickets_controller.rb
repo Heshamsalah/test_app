@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class TicketsController < ApplicationController
-  before_action :set_ticket, only: [:show, :update, :destroy]
+  before_action :set_ticket, only: %i[show update destroy]
+  before_action :set_user, only: %i[create]
 
   def index
     @tickets = Ticket.page(ticket_params[:page]).per(ticket_params[:per_page])
@@ -11,18 +14,14 @@ class TicketsController < ApplicationController
   end
 
   def create
-    user = User.find(ticket_params[:assigned_user_id])
-    @ticket = Ticket.new({
-      title: ticket_params[:title],
-      description: ticket_params[:description],
-      user: user,
-      due_date: DateTime.parse(ticket_params[:due_date])
-    })
-
+    @ticket = Ticket.new({ title: ticket_params[:title],
+                           description: ticket_params[:description],
+                           user: @user,
+                           due_date: DateTime.parse(ticket_params[:due_date]) })
     if @ticket.save
       json_response(@ticket, :created)
     else
-      json_response("Something went wrong", :internal_server_error)
+      json_response('Something went wrong', :internal_server_error)
     end
   end
 
@@ -37,13 +36,24 @@ class TicketsController < ApplicationController
   end
 
   private
-    def ticket_params
-      params.permit(
-        :id, :title, :description, :assigned_user_id, :due_date, :page, :per_page
-      )
-    end
-    
-    def set_ticket
-      @ticket = Ticket.find(ticket_params[:id])
-    end
+
+  def ticket_params
+    params.permit(
+      :id,
+      :title,
+      :description,
+      :assigned_user_id,
+      :due_date,
+      :page,
+      :per_page
+    )
+  end
+
+  def set_ticket
+    @ticket = Ticket.find(ticket_params[:id])
+  end
+
+  def set_user
+    @user = User.find(ticket_params[:assigned_user_id])
+  end
 end

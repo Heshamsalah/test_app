@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -19,6 +21,8 @@ gem 'puma', '~> 4.1'
 gem 'sidekiq'
 # Use pagination with Kaminari
 gem 'kaminari'
+# Ruby static code analyzer (a.k.a. linter) and code formatter.
+gem 'rubocop', '~> 1.11', require: false
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -31,11 +35,11 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Use factory_bot_rails for fixtures in tests
-  gem "factory_bot_rails"
+  gem 'factory_bot_rails'
   # Generating fake data with Faker
-  gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+  gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
 end
 
 group :test do
@@ -50,4 +54,4 @@ group :development do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
