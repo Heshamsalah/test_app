@@ -22,7 +22,10 @@ class UsersController < ApplicationController
     end
   end
 
-  def update; end
+  def update
+    @user.update(user_params)
+    head :no_content
+  end
 
   def destroy
     @user.destroy
