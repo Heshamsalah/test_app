@@ -1,16 +1,47 @@
 class TicketsController < ApplicationController
+  before_action :set_ticket, only: [:show, :update, :destroy]
+
   def index
+    @tickets = Ticket.page(ticket_params[:page]).per(ticket_params[:per_page])
+    json_response(@tickets)
   end
 
   def show
+    json_response(@ticket)
   end
 
   def create
+    user = User.find(ticket_params[:assignee])
+    @ticket = Ticket.new({
+      title: ticket_params[:title],
+      description: ticket_params[:description],
+      user: user,
+      due_date: DateTime.parse(ticket_params[:due_date])
+    })
+
+    if @ticket.save
+      json_response(@ticket, :created)
+    else
+      json_response("Something went wrong", :internal_server_error)
+    end
   end
 
   def update
   end
 
-  def delete
+  def destroy
+    @ticket.destroy
+    head :no_content
   end
+
+  private
+    def ticket_params
+      params.permit(
+        :id, :title, :description, :assignee, :due_date, :page, :per_page
+      )
+    end
+    
+    def set_ticket
+      @ticket = Ticket.find(ticket_params[:id])
+    end
 end

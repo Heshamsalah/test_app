@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :ticket do
     title { Faker::Name.name }
-    description  { Faker::Internet.email }
+    description  { Faker::Lorem.sentences }
     user { create(:user, :reminders_on) }
 
     trait :with_due_date do
