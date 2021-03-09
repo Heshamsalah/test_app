@@ -5,6 +5,8 @@ class TicketsDueDateReminderJob < ApplicationJob
 
   def perform(ticket)
     # Do something later
-    "Email Sent to #{ticket.user.mail}... "
+    # check if the user.send_due_date_reminder is still true.
+    return unless ticket.user.send_due_date_reminder
+    UserMailer.with(ticket: ticket).reminder_email.deliver_now
   end
 end
