@@ -42,7 +42,7 @@ class TicketsController < ApplicationController
       :id,
       :title,
       :description,
-      :assigned_user_id,
+      :user_id,
       :due_date,
       :page,
       :per_page
@@ -54,6 +54,6 @@ class TicketsController < ApplicationController
   end
 
   def set_user
-    @user = User.find(ticket_params[:assigned_user_id])
+    @user = User.find(ticket_params[:user_id])
   end
 end

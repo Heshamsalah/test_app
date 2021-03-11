@@ -13,5 +13,9 @@ FactoryBot.define do
       end
       time_zone { 'Europe/Vienna' }
     end
+
+    trait :with_tickets do
+      tickets { create_list(:ticket, 3, :with_reminders) }
+    end
   end
 end

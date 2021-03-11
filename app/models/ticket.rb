@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
-  belongs_to :user, foreign_key: 'assigned_user_id'
+  belongs_to :user
   has_many :reminders
 
   after_create :add_reminder
