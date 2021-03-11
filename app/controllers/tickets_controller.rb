@@ -5,7 +5,8 @@ class TicketsController < ApplicationController
   before_action :set_user, only: %i[create]
 
   def index
-    @tickets = Ticket.page(ticket_params[:page]).per(ticket_params[:per_page])
+    @tickets = Ticket.where(user: ticket_params[:user_id])
+      .page(ticket_params[:page]).per(ticket_params[:per_page])
     json_response(@tickets)
   end
 

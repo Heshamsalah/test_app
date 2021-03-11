@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_03_11_025213) do
 
   create_table "reminders", force: :cascade do |t|
-    t.integer "job_id"
+    t.string "job_id"
     t.datetime "time"
     t.string "status"
     t.integer "ticket_id"

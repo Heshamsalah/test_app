@@ -10,7 +10,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'should get paginated users' do
     get users_url, params: { page: 1, per_page: 50 }
     assert_response :success
-    assert_includes @users.first.name,
+    assert_equal @users.first.name,
                     JSON.parse(@response.body).first['name']
   end
 

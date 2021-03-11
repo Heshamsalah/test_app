@@ -10,4 +10,11 @@ class ReminderTest < ActiveSupport::TestCase
     )
     assert reminder.valid?
   end
+
+  test 'delete reminder and its corresponding job' do
+    ticket = create(:ticket, :with_due_date)
+    reminder = ticket.reminders.first
+    reminder.destroy
+    assert_raises(ActiveRecord::RecordNotFound) { reminder.reload }
+  end
 end
