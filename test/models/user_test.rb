@@ -3,9 +3,8 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  test 'create user' do
-    user = create(:user)
-
-    assert user
+  test 'valid user' do
+    user = User.new(attributes_for(:user))
+    assert user.valid?
   end
 end

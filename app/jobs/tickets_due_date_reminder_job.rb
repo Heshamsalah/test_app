@@ -7,6 +7,7 @@ class TicketsDueDateReminderJob < ApplicationJob
     # Do something later
     # check if the user.send_due_date_reminder is still true.
     return unless ticket.user.send_due_date_reminder
+
     UserMailer.with(ticket: ticket).reminder_email.deliver_now
     # We can add multiple notification methods here:
     # SMS

@@ -12,7 +12,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_308_190_241) do
+ActiveRecord::Schema.define(version: 20_210_311_025_213) do
+  create_table 'reminders', force: :cascade do |t|
+    t.integer 'job_id'
+    t.datetime 'time'
+    t.string 'status'
+    t.integer 'ticket_id'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+  end
+
   create_table 'tickets', force: :cascade do |t|
     t.string 'title'
     t.text 'description'

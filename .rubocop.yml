@@ -3,6 +3,12 @@ AllCops:
   NewCops: enable
   Exclude:
     - './bin/*'
+    - './db/*'
+    - './config/*/*'
+    - './config/*'
+    - 'Gemfile'
+    - 'Gemfile.lock'
+    - 'Rakefile'
 
 Style/Documentation:
   Enabled: false
@@ -10,6 +16,9 @@ Gemspec/DateAssignment: # (new in 1.10)
   Enabled: true
 Layout/SpaceBeforeBrackets: # (new in 1.7)
   Enabled: true
+Layout/LineLength:
+  Max: 80
+  IgnoredPatterns: ['^ *# ']
 Lint/AmbiguousAssignment: # (new in 1.7)
   Enabled: true
 Lint/DeprecatedConstants: # (new in 1.8)
