@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_14_221811) do
+ActiveRecord::Schema.define(version: 2021_03_15_035900) do
 
   create_table "reminders", force: :cascade do |t|
     t.string "title"
@@ -26,12 +26,14 @@ ActiveRecord::Schema.define(version: 2021_03_14_221811) do
   create_table "tickets", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "user_id"
-    t.date "due_date"
+    t.datetime "due_date"
     t.integer "status_id"
     t.integer "progress"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.string "ticketable_type"
+    t.integer "ticketable_id"
+    t.integer "created_by"
+    t.integer "assigned_user_id"
+    t.index ["ticketable_type", "ticketable_id"], name: "index_tickets_on_ticketable_type_and_ticketable_id"
   end
 
   create_table "users", force: :cascade do |t|
