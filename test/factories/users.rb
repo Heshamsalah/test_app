@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user do
     name { Faker::Name.name }
-    mail  { Faker::Internet.email }
+    email  { Faker::Internet.email }
 
     trait :reminders_on do
       send_due_date_reminder { true }
@@ -12,10 +12,6 @@ FactoryBot.define do
         Faker::Time.between(from: DateTime.now, to: DateTime.now + 1)
       end
       time_zone { 'Europe/Vienna' }
-    end
-
-    trait :with_tickets do
-      tickets { create_list(:ticket, 3, :with_due_date) }
     end
   end
 end

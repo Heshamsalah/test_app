@@ -2,8 +2,18 @@
 
 FactoryBot.define do
   factory :reminder do
-    time { '2021-03-11 04:52:13' }
-    status { 'Active' }
-    ticket
+    for_ticket # default if not trait is provided
+
+    title { Faker::Lorem.word }
+    note { Faker::Lorem.sentence }
+    due_date { Faker::Time.forward(days: 2, period: :morning) }
+    remind_interval { 0 }
+
+    trait :for_ticket do
+      association :reminderable, factory: :ticket
+    end
+
+    # create a trait for other resources that support reminders
+    # ....
   end
 end

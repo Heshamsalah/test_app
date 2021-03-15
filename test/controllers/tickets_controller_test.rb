@@ -9,11 +9,11 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get paginated tickets' do
-    get user_tickets_url(user_id: @user.id), 
-      params: { page: 1, per_page: 50 }
+    get user_tickets_url(user_id: @user.id),
+        params: { page: 1, per_page: 50 }
     assert_response :success
     assert_equal @tickets.first.title,
-                    JSON.parse(@response.body).first['title']
+                 JSON.parse(@response.body).first['title']
   end
 
   test 'should get ticket by id' do
@@ -31,8 +31,8 @@ class TicketsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update ticket' do
     ticket = @tickets.first
-    put user_ticket_url(user_id: @user.id, id: ticket.id), 
-      params: { title: 'New updated title' }
+    put user_ticket_url(user_id: @user.id, id: ticket.id),
+        params: { title: 'New updated title' }
     assert_response :success
     assert_equal ticket.reload.title, 'New updated title'
   end

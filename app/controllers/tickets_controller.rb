@@ -6,7 +6,7 @@ class TicketsController < ApplicationController
 
   def index
     @tickets = Ticket.where(user: ticket_params[:user_id])
-      .page(ticket_params[:page]).per(ticket_params[:per_page])
+                     .page(ticket_params[:page]).per(ticket_params[:per_page])
     json_response(@tickets)
   end
 
@@ -17,9 +17,10 @@ class TicketsController < ApplicationController
   def create
     @ticket = Ticket.new({ title: ticket_params[:title],
                            description: ticket_params[:description],
-                           user: @user,
+                           created_by: @user.id,
                            due_date: DateTime.parse(ticket_params[:due_date]) })
     if @ticket.save
+      add_reminder
       json_response(@ticket, :created)
     else
       json_response('Something went wrong', :internal_server_error)
@@ -27,7 +28,7 @@ class TicketsController < ApplicationController
   end
 
   def update
-    @ticket.update(ticket_params)
+    @ticket.update(ticket_filtered_params)
     head :no_content
   end
 
@@ -44,10 +45,15 @@ class TicketsController < ApplicationController
       :title,
       :description,
       :user_id,
+      :assigned_user_id,
       :due_date,
       :page,
       :per_page
     )
+  end
+
+  def ticket_filtered_params
+    ticket_params.except(:id, :user_id, :page, :per_page)
   end
 
   def set_ticket
@@ -56,5 +62,17 @@ class TicketsController < ApplicationController
 
   def set_user
     @user = User.find(ticket_params[:user_id])
+  end
+
+  def add_reminder
+    return unless @ticket.user.send_due_date_reminder && @ticket.due_date
+
+    interval = @ticket.user.due_date_reminder_interval
+    date = DateTime.parse(@ticket.due_date.to_s) - interval
+    job = TicketsDueDateReminderJob.set(wait_until: date).perform_later(@ticket)
+    @ticket.reminders.create(
+      title: @ticket.title, note: @ticket.description, due_date: date,
+      remind_interval: interval, job_id: job.job_id
+    )
   end
 end

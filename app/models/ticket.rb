@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 class Ticket < ApplicationRecord
-  belongs_to :user
-  has_many :reminders
+  belongs_to :ticketable, polymorphic: true, optional: true
+  belongs_to :user, foreign_key: :created_by
+  has_many :reminders, as: :reminderable
 
-  after_create :add_reminder
+  def assigned_user=(usr)
+    self.assigned_user_id = usr.id
+    save!
+  end
 
-  private
-
-  def add_reminder
-    return unless user.send_due_date_reminder && due_date.present?
-    
-    interval = user.due_date_reminder_interval
-    date = DateTime.parse(due_date.to_s) - interval
-    job = TicketsDueDateReminderJob.set(wait_until: date, queue: "aaa").perform_later(self)
-    reminders.create(job_id: job.job_id, time: date)
+  def assigned_user
+    nil || User.where(id: assigned_user_id).first
   end
 end

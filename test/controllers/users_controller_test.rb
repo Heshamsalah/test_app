@@ -11,7 +11,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get users_url, params: { page: 1, per_page: 50 }
     assert_response :success
     assert_equal @users.first.name,
-                    JSON.parse(@response.body).first['name']
+                 JSON.parse(@response.body).first['name']
   end
 
   test 'should get user by id' do

@@ -1,50 +1,47 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RemindersControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @user = create(:user, :reminders_on)
-    @ticket = create(:ticket, user: @user)
-    @reminders = create_list(:reminder, 20, ticket: @ticket)
+    @reminders = create_list(:reminder, 20)
+    @resource = @reminders.first.reminderable
   end
 
-  test 'should get paginated reminders' do
-    get user_ticket_reminders_url(user_id: @user.id, ticket_id: @ticket.id), 
-      params: { page: 1, per_page: 50 }
+  test 'should_get_paginated_reminders_for_a_resource' do
+    get reminders_url,
+        params: { resource_id: @resource.id, page: 1, per_page: 50 }
     assert_response :success
-    assert_equal @reminders.first.time,
-                    DateTime.parse(JSON.parse(@response.body).first['time'])
+    reminders_count = Reminder.where(reminderable: @resource).count
+    assert_equal JSON.parse(@response.body).count, reminders_count
   end
 
   test 'should get reminder by id' do
     reminder = @reminders.first
-    get user_ticket_reminder_url(
-      user_id: @user.id, ticket_id: @ticket.id, id: reminder.id
-    )
+    get reminder_url(id: reminder.id)
     assert_response :success
     assert_equal reminder.id, JSON.parse(@response.body)['id']
   end
 
   test 'should create reminder' do
-    reminder_params = attributes_for(:reminder)
-    post user_ticket_reminders_url(user_id: @user.id, ticket_id: @ticket.id), 
-      params: reminder_params
+    reminder_params = attributes_for(:reminder).merge(
+      resource_id: @resource.id, resource_type: @resource.class.name
+    )
+    post reminders_url,
+         params: reminder_params
     assert_response :success
   end
 
   test 'should update reminder' do
     reminder = @reminders.first
-    put user_ticket_reminder_url(
-      user_id: @user.id, ticket_id: @ticket.id, id: reminder.id
-    ), params: { status: 'Active' }
+    put reminder_url(id: reminder.id), params: { note: 'New Note' }
     assert_response :success
-    assert_equal reminder.reload.status, 'Active'
+    assert_equal reminder.reload.note, 'New Note'
   end
 
   test 'should delete reminder' do
     reminder = @reminders.first
-    delete user_ticket_reminder_url(
-      user_id: @user.id, ticket_id: @ticket.id, id: reminder.id
-    )
+    delete reminder_url(id: reminder.id)
     assert_response :success
     assert_equal @reminders.count - 1, Reminder.count
   end
