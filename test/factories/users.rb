@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user do
     name { Faker::Name.name }
-    mail  { Faker::Internet.email }
+    email  { Faker::Internet.email }
 
     trait :reminders_on do
       send_due_date_reminder { true }

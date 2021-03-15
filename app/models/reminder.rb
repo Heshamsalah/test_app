@@ -5,7 +5,7 @@
 # reminders by adding the ability to delete them, which will require finding 
 # the created job and delete it.
 class Reminder < ApplicationRecord
-  belongs_to :ticket
+  belongs_to :reminderable, polymorphic: true
 
   #Todo: Add a before_destroy method to handle unscheduling the reminder job.
 end

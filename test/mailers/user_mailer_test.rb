@@ -14,7 +14,7 @@ class UserMailerTest < ActionMailer::TestCase
 
     # Test the body of the sent email contains what we expect it to
     assert_equal ['from@example.com'], email.from
-    assert_equal [@ticket.user.mail.to_s], email.to
+    assert_equal [@ticket.user.email.to_s], email.to
     assert_equal "Remider | due dated ticket #{@ticket.id}", email.subject
   end
 end

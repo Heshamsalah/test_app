@@ -11,6 +11,6 @@ class TicketTest < ActiveSupport::TestCase
 
     assert_enqueued_with(job: TicketsDueDateReminderJob, at: date)
     assert_equal ticket.reminders.count, 1
-    assert_equal DateTime.parse(ticket.reminders.first.time.to_s), date
+    assert_equal DateTime.parse(ticket.reminders.first.due_date.to_s), date
   end
 end
