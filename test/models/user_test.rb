@@ -9,7 +9,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user has reminders through tickets' do
-    user = create(:user, :reminders_on, :with_tickets)
+    user = create(:user, :reminders_on)
+    tickets = create_list(:ticket, 3, :with_due_date, user: user)
+    tickets.each do |ticket|
+      create(:reminder, reminderable: ticket)
+    end
 
     assert_equal user.reminders.count, 3
   end

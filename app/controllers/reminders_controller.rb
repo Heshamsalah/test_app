@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 class RemindersController < ApplicationController
   before_action :set_reminder, only: %i[show update destroy]
   before_action :set_resource, only: %i[create]
 
   def index
     @reminders = Reminder.where(reminderable_id: reminder_params[:resource_id])
-      .page(reminder_params[:page]).per(reminder_params[:per_page])
+                         .page(reminder_params[:page])
+                         .per(reminder_params[:per_page])
     json_response(@reminders)
   end
 
@@ -58,7 +61,7 @@ class RemindersController < ApplicationController
   end
 
   def set_resource
-    @resource = reminder_params[:resource_type].constantize
-      .find(reminder_params[:resource_id])
+    reminder_id = reminder_params[:resource_id]
+    @resource = reminder_params[:resource_type].constantize.find(reminder_id)
   end
 end

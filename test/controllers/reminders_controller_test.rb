@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RemindersControllerTest < ActionDispatch::IntegrationTest
@@ -8,7 +10,7 @@ class RemindersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should_get_paginated_reminders_for_a_resource' do
     get reminders_url,
-      params: { resource_id: @resource.id, page: 1, per_page: 50 }
+        params: { resource_id: @resource.id, page: 1, per_page: 50 }
     assert_response :success
     reminders_count = Reminder.where(reminderable: @resource).count
     assert_equal JSON.parse(@response.body).count, reminders_count
@@ -25,8 +27,8 @@ class RemindersControllerTest < ActionDispatch::IntegrationTest
     reminder_params = attributes_for(:reminder).merge(
       resource_id: @resource.id, resource_type: @resource.class.name
     )
-    post reminders_url, 
-      params: reminder_params
+    post reminders_url,
+         params: reminder_params
     assert_response :success
   end
 
