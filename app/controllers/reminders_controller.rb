@@ -16,12 +16,11 @@ class RemindersController < ApplicationController
   end
 
   def create
-    @reminder = Reminder.new(
+    result = CreateReminderService.call(
       reminder_filtered_params.merge(reminderable: @resource)
     )
-
-    if @reminder.save
-      json_response(@reminder, :created)
+    if result.success
+      json_response(result.data, :created)
     else
       json_response('Something went wrong', :internal_server_error)
     end
